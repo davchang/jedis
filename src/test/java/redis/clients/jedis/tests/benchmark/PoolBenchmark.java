@@ -38,6 +38,7 @@ public class PoolBenchmark {
     for (int i = 0; i < 50; i++) {
       Thread hj = new Thread(new Runnable() {
         public void run() {
+          System.out.println("-- new thread --");
           for (int i = 0; (i = ind.getAndIncrement()) < TOTAL_OPERATIONS;) {
             try {
               Jedis j = pool.getResource();

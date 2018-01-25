@@ -15,11 +15,11 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 public class ConnectionTest {
   private Connection client;
 
-  // @Before
-  // public void setUp() throws Exception {
-  //   client = new Connection();
-  // }
-  //
+  @Before
+  public void setUp() throws Exception {
+    client = new Connection();
+  }
+
   // @After
   // public void tearDown() throws Exception {
   //   client.disconnect();
@@ -47,20 +47,21 @@ public class ConnectionTest {
 
   @Test
   public void checkCloseable() {
-    System.out.println("========= dc 1=========");
-    client.setHost("10.240.135.43");
+    System.out.println("=================================== dc  ConnectionTest =================================");
+    client.setHost("10.240.135.43"); // dvrecprd1 redis-13396.ec.mystrongtie.com node1.ec.mystrongtie.com 10.240.135.48");
     client.setPort(13396);
     client.connect();
-    System.out.println("========= dc 2=========");
     client.close();
-    System.out.println("========= dc 3=========");
+
+    System.out.println("=================================== dc done =================================");
+
   }
 
   // @Test
   // public void getErrorAfterConnectionReset() throws Exception {
   //   class TestConnection extends Connection {
   //     public TestConnection() {
-  //       super("localhost", 6379);
+  //       super("dvrecprd1", 13396);
   //     }
   //
   //     @Override

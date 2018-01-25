@@ -9,7 +9,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.tests.HostAndPortUtil;
 
 public class GetSetBenchmark {
-  private static HostAndPort hnp = new HostAndPort("10.240.135.43", 13396); // HostAndPortUtil.getRedisServers().get(0);
+  private static HostAndPort hnp = new HostAndPort("redis-13396.ec.mystrongtie.com", 13396); // 10.240.135.43 HostAndPortUtil.getRedisServers().get(0);
   private static final int TOTAL_OPERATIONS = 100000;
 
   public static void main(String[] args) throws UnknownHostException, IOException {
