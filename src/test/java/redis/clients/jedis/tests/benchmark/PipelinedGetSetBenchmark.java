@@ -10,13 +10,13 @@ import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.tests.HostAndPortUtil;
 
 public class PipelinedGetSetBenchmark {
-  private static HostAndPort hnp = HostAndPortUtil.getRedisServers().get(0);
+  private static HostAndPort hnp = new HostAndPort("10.240.135.43", 13396); // HostAndPortUtil.getRedisServers().get(0);
   private static final int TOTAL_OPERATIONS = 200000;
 
   public static void main(String[] args) throws UnknownHostException, IOException {
     Jedis jedis = new Jedis(hnp);
     jedis.connect();
-    jedis.auth("foobared");
+    // jedis.auth("foobared");
     jedis.flushAll();
 
     long begin = Calendar.getInstance().getTimeInMillis();
@@ -24,8 +24,13 @@ public class PipelinedGetSetBenchmark {
     Pipeline p = jedis.pipelined();
     for (int n = 0; n <= TOTAL_OPERATIONS; n++) {
       String key = "foo" + n;
-      p.set(key, "bar" + n);
-      p.get(key);
+      // p.set(key, "bar" + n);
+      // p.get(key);
+
+      jedis.set(key, "bar" + n);
+      System.out.println("--key=" + key + " value=" + "bar" + n);
+      String returnValue = jedis.get(key);
+      System.out.println("--key=" + key + " returnValue=" + returnValue);
     }
     p.sync();
 

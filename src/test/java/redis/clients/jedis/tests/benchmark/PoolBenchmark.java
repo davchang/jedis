@@ -12,13 +12,13 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.tests.HostAndPortUtil;
 
 public class PoolBenchmark {
-  private static HostAndPort hnp = HostAndPortUtil.getRedisServers().get(0);
+  private static HostAndPort hnp = new HostAndPort("10.240.135.43", 13396); // HostAndPortUtil.getRedisServers().get(0);
   private static final int TOTAL_OPERATIONS = 100000;
 
   public static void main(String[] args) throws Exception {
     Jedis j = new Jedis(hnp);
     j.connect();
-    j.auth("foobared");
+    // j.auth("foobared");
     j.flushAll();
     j.quit();
     j.disconnect();
@@ -31,7 +31,7 @@ public class PoolBenchmark {
 
   private static void withPool() throws Exception {
     final JedisPool pool = new JedisPool(new GenericObjectPoolConfig(), hnp.getHost(),
-        hnp.getPort(), 2000, "foobared");
+        hnp.getPort(), 2000 /*, "foobared"*/);
     List<Thread> tds = new ArrayList<Thread>();
 
     final AtomicInteger ind = new AtomicInteger();
