@@ -13,7 +13,8 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.tests.HostAndPortUtil;
 
 public abstract class JedisCommandTestBase {
-  protected static HostAndPort hnp = new HostAndPort("10.240.135.43", 13396);   //HostAndPortUtil.getRedisServers().get(0);
+  // 10.240.135.43, redis-13396.ec.mystrongtie.com
+  protected static HostAndPort hnp = new HostAndPort("redis-13396.ec.mystrongtie.com", 13396);   // HostAndPortUtil.getRedisServers().get(0);
 
   protected Jedis jedis;
 

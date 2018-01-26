@@ -10,29 +10,43 @@ import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.tests.HostAndPortUtil;
 
 public class PipelinedGetSetBenchmark {
-  private static HostAndPort hnp = new HostAndPort("10.240.135.43", 13396); // HostAndPortUtil.getRedisServers().get(0);
-  private static final int TOTAL_OPERATIONS = 200000;
+  private static HostAndPort hnp = new HostAndPort("redis-13396.ec.mystrongtie.com", 13396); // 10.240.135.43 HostAndPortUtil.getRedisServers().get(0);
+  private static final int TOTAL_OPERATIONS = 3000; // 200000;
 
   public static void main(String[] args) throws UnknownHostException, IOException {
     Jedis jedis = new Jedis(hnp);
+    System.out.println("--host=" + hnp.getHost() + " port=" + hnp.getPort());
     jedis.connect();
     // jedis.auth("foobared");
-    jedis.flushAll();
+    // jedis.flushAll();
 
     long begin = Calendar.getInstance().getTimeInMillis();
 
-    Pipeline p = jedis.pipelined();
+    // Pipeline p = jedis.pipelined();
+    // for (int n = 0; n <= TOTAL_OPERATIONS; n++) {
+    //   String key = "foo" + n;
+    //   // p.set(key, "bar" + n);
+    //   // p.get(key);
+    //
+    //   jedis.set(key, "bar" + n);
+    //   System.out.println("--key=" + key + " value=" + "bar" + n);
+    //   String returnValue = jedis.get(key);
+    //   System.out.println("--key=" + key + " returnValue=" + returnValue);
+    // }
+    // p.sync();
+
+    System.out.println("==================== Round 2 ===================");
     for (int n = 0; n <= TOTAL_OPERATIONS; n++) {
       String key = "foo" + n;
-      // p.set(key, "bar" + n);
-      // p.get(key);
+      String value = "bar" + n;
 
-      jedis.set(key, "bar" + n);
-      System.out.println("--key=" + key + " value=" + "bar" + n);
       String returnValue = jedis.get(key);
       System.out.println("--key=" + key + " returnValue=" + returnValue);
+      if (!value.equals(returnValue)) {
+        System.out.println("====================================================== FATAL ERROR =========================" + key + " " + value + " " + returnValue);
+        break;
+      }
     }
-    p.sync();
 
     long elapsed = Calendar.getInstance().getTimeInMillis() - begin;
 

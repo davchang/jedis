@@ -14,19 +14,40 @@ public class GetSetBenchmark {
 
   public static void main(String[] args) throws UnknownHostException, IOException {
     Jedis jedis = new Jedis(hnp);
+    System.out.println("--host=" + hnp.getHost() + " port=" + hnp.getPort());
     jedis.connect();
     //jedis.auth("foobared");
     jedis.flushAll();
 
     long begin = Calendar.getInstance().getTimeInMillis();
 
+    System.out.println("==================== Round 1 ===================");
     for (int n = 0; n <= TOTAL_OPERATIONS; n++) {
       String key = "foo" + n;
+      String value = "bar" + n;
 
-      jedis.set(key, "bar" + n);
-      System.out.println("--key=" + key + " value=" + "bar" + n);
+      jedis.set(key, value);
+      System.out.println("--key=" + key + " value=" + value);
+
+      // String returnValue = jedis.get(key);
+      // System.out.println("--key=" + key + " returnValue=" + returnValue);
+      // if (!value.equals(returnValue)) {
+      //   System.out.println("====================================================== FATAL ERROR =========================" + key + " " + value + " " + returnValue);
+      //   break;
+      // }
+    }
+
+    System.out.println("==================== Round 2 ===================");
+    for (int n = 0; n <= TOTAL_OPERATIONS; n++) {
+      String key = "foo" + n;
+      String value = "bar" + n;
+
       String returnValue = jedis.get(key);
       System.out.println("--key=" + key + " returnValue=" + returnValue);
+      if (!value.equals(returnValue)) {
+        System.out.println("====================================================== FATAL ERROR =========================" + key + " " + value + " " + returnValue);
+        break;
+      }
     }
 
     long elapsed = Calendar.getInstance().getTimeInMillis() - begin;

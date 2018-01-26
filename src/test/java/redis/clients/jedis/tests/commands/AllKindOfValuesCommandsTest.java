@@ -52,7 +52,7 @@ public class AllKindOfValuesCommandsTest extends JedisCommandTestBase {
 
     assertArrayEquals(bfoobar, jedis.ping(bfoobar));
   }
-/*
+
   @Test
   public void exists() {
     System.out.println("=================================== dc  All exists =================================");
@@ -393,9 +393,9 @@ public class AllKindOfValuesCommandsTest extends JedisCommandTestBase {
     assertEquals(1, bstatus);
 
   }
-*/
+
   @Test
-  public void ttl() {
+  public void ttl()  throws Exception {
     System.out.println("=================================== ttl =================================");
 
     long ttl = jedis.ttl("foo");
@@ -407,31 +407,48 @@ public class AllKindOfValuesCommandsTest extends JedisCommandTestBase {
 
     jedis.expire("foo", 20);
     ttl = jedis.ttl("foo");
+
     assertTrue(ttl >= 0 && ttl <= 20);
+    System.out.println("=================================== ttl =================================a expire in 20, ttl=" + ttl);
+    Thread.sleep(5000);
+    ttl = jedis.ttl("foo");
+    System.out.println("=================================== ttl =================================b sleep 5, ttl=" + ttl);
+    Thread.sleep(5000);
+    ttl = jedis.ttl("foo");
+    System.out.println("=================================== ttl =================================b sleep 5, ttl=" + ttl);
+    Thread.sleep(5000);
+    ttl = jedis.ttl("foo");
+    System.out.println("=================================== ttl =================================b sleep 5, ttl=" + ttl);
+    String value = jedis.get("foo");
+    System.out.println("=================================== ttl =================================c value=" + value);
+    Thread.sleep(7000);
+    ttl = jedis.ttl("foo");
+    System.out.println("=================================== ttl =================================d sleep 7, ttl=" + ttl);
+    value = jedis.get("foo");
+    System.out.println("=================================== ttl =================================e value=" + value);
 
-    // Binary
-    long bttl = jedis.ttl(bfoo);
-    assertEquals(-2, bttl);
+    // // Binary
+    // long bttl = jedis.ttl(bfoo);
+    // assertEquals(-2, bttl);
+    //
+    // jedis.set(bfoo, bbar);
+    // bttl = jedis.ttl(bfoo);
+    // assertEquals(-1, bttl);
+    //
+    // jedis.expire(bfoo, 10);
+    // bttl = jedis.ttl(bfoo);
+    // System.out.println("=================================== ttl =================================a expire in 10, ttl=" + bttl);
+    // Thread.sleep(5000);
+    // bttl = jedis.ttl(bfoo);
+    // System.out.println("=================================== ttl =================================b expire in 5, ttl=" + bttl);
+    // Thread.sleep(6000);
+    // bttl = jedis.ttl(bfoo);
+    // System.out.println("=================================== ttl =================================c " + bttl);
+    // String value = jedis.get(bfoo).toString();
+    // System.out.println("=================================== ttl =================================d value=" + value);
+    //
+    // assertEquals(10, bttl);
 
-    jedis.set(bfoo, bbar);
-    bttl = jedis.ttl(bfoo);
-    assertEquals(-1, bttl);
-
-    try {
-      jedis.expire(bfoo, 10);
-      bttl = jedis.ttl(bfoo);
-      System.out.println("=================================== ttl =================================a " + bttl);
-      Thread.sleep(5000);
-      bttl = jedis.ttl(bfoo);
-      System.out.println("=================================== ttl =================================b " + bttl);
-      Thread.sleep(5000);
-      bttl = jedis.ttl(bfoo);
-      System.out.println("=================================== ttl =================================c " + bttl);
-
-      assertEquals(10, bttl);
-    } exception() {
-      
-    }
   }
 
   @Test
